@@ -1,0 +1,16 @@
+{
+  "name": "pushtodeploy",
+  "description": "the simple way to deploy an app",
+  "version": "0.1.0",
+  "scripts": {},
+  "bin": {
+    "pushtodeploy": "bin/pushtodeploy.js"
+  },
+  "dependencies": {
+    "command-line-args": "^2.1.6",
+    "escapeshellarg": "^0.1.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  }
+}

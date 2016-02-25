@@ -1,0 +1,22 @@
+{
+  "bitwise": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "freeze": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonbsp": true,
+  "nonew": false,
+  "plusplus": false,
+  "quotmark": false,
+  "undef": true,
+  "unused": true,
+  "strict": false,
+
+  "browserify": true
+}
