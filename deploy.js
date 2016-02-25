@@ -1,13 +1,17 @@
 var Logger = require("./logger"),
     gitpull = require("./gitpull"),
     buildsrc = require("./buildsrc"),
-    install = require("./install");
+    install = require("./install"),
+    tests = require("./tests");
 
 module.exports = function (opts, cb) {
   var logger = new Logger("pushtodeploy"),
+      repoPath,
+      buildPath,
       afterGitpull,
       afterBuildsrc,
-      afterInstall;
+      afterInstall,
+      afterTests;
 
   logger.log("the simple way to deploy an app");
 
@@ -27,17 +31,30 @@ module.exports = function (opts, cb) {
     buildsrc(opts.buildsrc, afterBuildsrc);
   };
 
-  afterBuildsrc = function (err, _logger, repoPath, buildPath) {
+  afterBuildsrc = function (err, _logger, _repoPath, _buildPath) {
     logger.addLogger(_logger);
 
     if (err) {
       return cb(err);
     }
 
+    repoPath = _repoPath;
+    buildPath = _buildPath;
+
     install(opts.install, repoPath, buildPath, afterInstall);
   };
 
   afterInstall = function (err, _logger) {
+    logger.addLogger(_logger);
+
+    if (err) {
+      return cb(err);
+    }
+
+    tests(opts.tests, repoPath, buildPath, afterTests);
+  };
+
+  afterTests = function (err, _logger) {
     logger.addLogger(_logger);
 
     if (err) {

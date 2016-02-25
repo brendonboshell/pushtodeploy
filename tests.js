@@ -4,12 +4,12 @@ var Logger = require('./logger'),
     cwd = process.cwd();
 
 module.exports = function (opts, repoPath, buildPath, cb) {
-  var logger = new Logger('install'),
+  var logger = new Logger('test'),
       relativePath,
       packagePath,
-      afterInstall;
+      afterTest;
 
-  afterInstall = function (err) {
+  afterTest = function (err) {
     if (err) {
       return cb(err, logger);
     }
@@ -20,7 +20,7 @@ module.exports = function (opts, repoPath, buildPath, cb) {
   relativePath = path.relative(repoPath, cwd);
   packagePath = path.join(buildPath, relativePath);
 
-  exec(logger, 'npm install', {
+  exec(logger, 'npm test', {
     cwd: packagePath
-  }, afterInstall);
+  }, afterTest);
 };
