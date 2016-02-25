@@ -4,11 +4,13 @@
   "version": "0.1.0",
   "scripts": {},
   "bin": {
-    "pushtodeploy": "bin/pushtodeploy.js"
+    "pushtodeploy": "bin/pushtodeploy.js",
+    "pushtodeploy-listen": "bin/pushtodeploy-listen.js"
   },
   "dependencies": {
     "command-line-args": "^2.1.6",
-    "escapeshellarg": "^0.1.0"
+    "escapeshellarg": "^0.1.0",
+    "express": "^4.13.4"
   },
   "devDependencies": {
     "mocha": "^2.4.5"
