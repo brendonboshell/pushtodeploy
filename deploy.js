@@ -2,7 +2,8 @@ var Logger = require("./logger"),
     gitpull = require("./gitpull"),
     buildsrc = require("./buildsrc"),
     install = require("./install"),
-    tests = require("./tests");
+    tests = require("./tests"),
+    switchbuild = require("./switchbuild");
 
 module.exports = function (opts, cb) {
   var logger = new Logger("pushtodeploy"),
@@ -11,15 +12,10 @@ module.exports = function (opts, cb) {
       afterGitpull,
       afterBuildsrc,
       afterInstall,
-      afterTests;
+      afterTests,
+      afterSwitchBuild;
 
   logger.log("the simple way to deploy an app");
-
-  // 1. Update the repo
-  // 2. Create a new build folder, copy node modules and symlink secrets
-  // 3. Install the app
-  // 4. Run tests
-  // 5. Switch
 
   afterGitpull = function (err, _logger) {
     logger.addLogger(_logger);
@@ -55,6 +51,16 @@ module.exports = function (opts, cb) {
   };
 
   afterTests = function (err, _logger) {
+    logger.addLogger(_logger);
+
+    if (err) {
+      return cb(err);
+    }
+
+    switchbuild(opts.switchbuild, repoPath, buildPath, afterSwitchBuild);
+  };
+
+  afterSwitchBuild = function (err, _logger) {
     logger.addLogger(_logger);
 
     if (err) {
