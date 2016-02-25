@@ -50,4 +50,18 @@ Logger.prototype.error = function (str, isAppend) {
   this._log(str, isAppend, true);
 };
 
+Logger.prototype.toString = function () {
+  var buffer = "";
+
+  this.logs.forEach(function (log) {
+    if (typeof log === "string") {
+      buffer += log;
+    } else {
+      buffer += log.toString();
+    }
+  });
+
+  return buffer;
+};
+
 module.exports = Logger;

@@ -10,7 +10,8 @@
   "dependencies": {
     "command-line-args": "^2.1.6",
     "escapeshellarg": "^0.1.0",
-    "express": "^4.13.4"
+    "express": "^4.13.4",
+    "nodemailer": "^2.2.1"
   },
   "devDependencies": {
     "mocha": "^2.4.5"

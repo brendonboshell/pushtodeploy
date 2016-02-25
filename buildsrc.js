@@ -8,7 +8,7 @@ module.exports = function (opts, cb) {
   var logger = new Logger('buildsrc    '),
       repoPath,
       buildPath,
-      commit = {},
+      commit = { hash: "unknown", branch: "unknown" },
       afterGetGitPath,
       afterGetCommitHash,
       afterGetBranchName,
@@ -18,7 +18,7 @@ module.exports = function (opts, cb) {
 
   afterGetGitPath = function (err, path) {
     if (err) {
-      return cb(err, logger);
+      return cb(err, logger, repoPath, buildPath, commit);
     }
 
     repoPath = path.replace(/\s+/g, "");
@@ -30,7 +30,7 @@ module.exports = function (opts, cb) {
 
   afterGetCommitHash = function (err, hash) {
     if (err) {
-      return cb(err, logger);
+      return cb(err, logger, repoPath, buildPath, commit);
     }
 
     commit.hash = hash.replace(/\s+/g, "");
@@ -44,7 +44,7 @@ module.exports = function (opts, cb) {
     var currentPath;
 
     if (err) {
-      return cb(err, logger);
+      return cb(err, logger, repoPath, buildPath, commit);
     }
 
     commit.branch = branchname.replace(/\s+/g, "");
@@ -64,7 +64,7 @@ module.exports = function (opts, cb) {
         nodeModulesTo;
 
     if (err) {
-      return cb(err, logger);
+      return cb(err, logger, repoPath, buildPath, commit);
     }
 
     if (!opts.copyNodeModules) {
@@ -111,11 +111,11 @@ module.exports = function (opts, cb) {
 
   afterSymlink = function (err) {
     if (err) {
-      return cb(err, logger);
+      return cb(err, logger, repoPath, buildPath, commit);
     }
 
     logger.log('buildsrc is completed successfully!');
-    cb(null, logger, repoPath, buildPath);
+    cb(null, logger, repoPath, buildPath, commit);
   };
 
   logger.log('Getting the repo path');

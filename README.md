@@ -43,6 +43,18 @@ Then create a `pushtodeploy.json` config file, which looks something like this (
         "secrets": [
           "../secrets.js" // array of secret files to copy over
         ]
+      },
+      "email": {
+        "from": "from@example.com",
+        "to": "to@example.com",
+        "smtp": {
+          "host": "smtp.mandrillapp.com",
+          "port": 587,
+          "auth": {
+            "user": "from@example.com",
+            "pass": "p@$$w0rd"
+          }
+        }
       }
     }
 

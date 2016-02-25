@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-var deploy = require('../deploy'),
+var deploy = require('../deployandemail'),
     commandLineArgs = require('command-line-args'),
     fs = require("fs"),
     cli,
