@@ -3,7 +3,8 @@ var Logger = require("./logger"),
     buildsrc = require("./buildsrc"),
     install = require("./install"),
     tests = require("./tests"),
-    switchbuild = require("./switchbuild");
+    switchbuild = require("./switchbuild"),
+    start = require("./start");
 
 module.exports = function (opts, cb) {
   var logger = new Logger("pushtodeploy"),
@@ -13,7 +14,8 @@ module.exports = function (opts, cb) {
       afterBuildsrc,
       afterInstall,
       afterTests,
-      afterSwitchBuild;
+      afterSwitchBuild,
+      afterStart;
 
   logger.log("the simple way to deploy an app");
 
@@ -61,6 +63,16 @@ module.exports = function (opts, cb) {
   };
 
   afterSwitchBuild = function (err, _logger) {
+    logger.addLogger(_logger);
+
+    if (err) {
+      return cb(err);
+    }
+
+    start(opts.start, repoPath, buildPath, afterStart);
+  };
+
+  afterStart = function (err, _logger) {
     logger.addLogger(_logger);
 
     if (err) {

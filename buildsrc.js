@@ -2,11 +2,10 @@ var Logger = require('./logger'),
     exec = require('./exec'),
     path = require("path"),
     escapeshellarg = require("escapeshellarg"),
-    fs = require('fs'),
     cwd = process.cwd();
 
 module.exports = function (opts, cb) {
-  var logger = new Logger('buildsrc'),
+  var logger = new Logger('buildsrc    '),
       repoPath,
       buildPath,
       commit = {},

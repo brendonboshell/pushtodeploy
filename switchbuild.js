@@ -5,7 +5,7 @@ var Logger = require('./logger'),
     cwd = process.cwd();
 
 module.exports = function (opts, repoPath, buildPath, cb) {
-  var logger = new Logger('switch'),
+  var logger = new Logger('switch      '),
       currentPath,
       afterSwitch;
 

@@ -4,7 +4,7 @@ var Logger = require('./logger'),
     cwd = process.cwd();
 
 module.exports = function (opts, repoPath, buildPath, cb) {
-  var logger = new Logger('test'),
+  var logger = new Logger('test        '),
       relativePath,
       packagePath,
       afterTest;

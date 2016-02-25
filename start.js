@@ -1,15 +1,16 @@
 var Logger = require('./logger'),
     exec = require('./exec'),
     path = require("path"),
+    escapeshellarg = require("escapeshellarg"),
     cwd = process.cwd();
 
 module.exports = function (opts, repoPath, buildPath, cb) {
-  var logger = new Logger('install     '),
+  var logger = new Logger('start       '),
       relativePath,
       packagePath,
-      afterInstall;
+      afterStart;
 
-  afterInstall = function (err) {
+  afterStart = function (err) {
     if (err) {
       return cb(err, logger);
     }
@@ -18,9 +19,9 @@ module.exports = function (opts, repoPath, buildPath, cb) {
   };
 
   relativePath = path.relative(repoPath, cwd);
-  packagePath = path.join(buildPath, relativePath);
+  packagePath = path.join(cwd, ".pushtodeploy/current", relativePath);
 
-  exec(logger, 'npm install', {
+  exec(logger, 'cd ' + escapeshellarg(packagePath) + ' && npm start', {
     cwd: packagePath
-  }, afterInstall);
+  }, afterStart);
 };
