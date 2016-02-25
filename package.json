@@ -1,7 +1,7 @@
 {
   "name": "pushtodeploy",
   "description": "the simple way to deploy an app",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "keywords": ["deployment", "testing", "build"],
   "bugs": {
     "url": "https://github.com/brendonboshell/pushtodeploy/issues"

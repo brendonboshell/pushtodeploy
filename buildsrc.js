@@ -74,8 +74,8 @@ module.exports = function (opts, cb) {
 
     logger.log('Copying node_modules from current deployment');
     relativePath = path.relative(repoPath, cwd);
-    nodeModulesFrom = path.join(cwd, ".pushtodeploy/current", relativePath);
-    nodeModulesTo = path.join(cwd, ".pushtodeploy/" + commit.hash, relativePath);
+    nodeModulesFrom = path.join(cwd, ".pushtodeploy/current", relativePath, "node_modules");
+    nodeModulesTo = path.join(cwd, ".pushtodeploy/" + commit.hash, relativePath, "node_modules");
 
     exec(logger, "cp -R " + escapeshellarg(nodeModulesFrom) + " " +
       escapeshellarg(nodeModulesTo), afterCopyNodeModules);
