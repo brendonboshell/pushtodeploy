@@ -48,7 +48,7 @@ module.exports = function (opts, cb) {
     logger.addLogger(_logger);
 
     if (err) {
-      return cb(err);
+      return cb(err, logger, commit);
     }
 
     tests(opts.tests, repoPath, buildPath, afterTests);
