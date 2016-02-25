@@ -14,11 +14,12 @@ module.exports = function (opts, cb) {
       afterGetCommitHash,
       afterGetBranchName,
       afterGitClone,
-      afterCopyNodeModules;
+      afterCopyNodeModules,
+      afterSymlink;
 
   afterGetGitPath = function (err, path) {
     if (err) {
-      return cb(err);
+      return cb(err, logger);
     }
 
     repoPath = path.replace(/\s+/g, "");
@@ -30,7 +31,7 @@ module.exports = function (opts, cb) {
 
   afterGetCommitHash = function (err, hash) {
     if (err) {
-      return cb(err);
+      return cb(err, logger);
     }
 
     commit.hash = hash.replace(/\s+/g, "");
@@ -44,7 +45,7 @@ module.exports = function (opts, cb) {
     var currentPath;
 
     if (err) {
-      return cb(err);
+      return cb(err, logger);
     }
 
     commit.branch = branchname.replace(/\s+/g, "");
@@ -64,7 +65,7 @@ module.exports = function (opts, cb) {
         nodeModulesTo;
 
     if (err) {
-      return cb(err);
+      return cb(err, logger);
     }
 
     if (!opts.copyNodeModules) {
@@ -75,17 +76,47 @@ module.exports = function (opts, cb) {
     logger.log('Copying node_modules from current deployment');
     relativePath = path.relative(repoPath, cwd);
     nodeModulesFrom = path.join(cwd, ".pushtodeploy/current", relativePath);
+    nodeModulesTo = path.join(cwd, ".pushtodeploy/" + commit.hash, relativePath);
 
     exec(logger, "cp -R " + escapeshellarg(nodeModulesFrom) + " " +
       escapeshellarg(nodeModulesTo), afterCopyNodeModules);
   };
 
   afterCopyNodeModules = function (err) {
+    var symExecs = [];
+
     if (err) {
       logger.log('Copy of node modules failed. Ignoring this error.');
     }
 
-    logger.log('Symlinking secrets');
+    opts.secrets.forEach(function (secret) {
+      var secretFrom,
+          relativePath,
+          secretTo;
+
+      secretFrom = path.join(cwd, secret);
+      relativePath = path.relative(repoPath, cwd);
+      secretTo = path.join(cwd, ".pushtodeploy/" + commit.hash, relativePath, secret);
+
+      symExecs.push("ln -sfn " + escapeshellarg(secretFrom) + " " +
+        escapeshellarg(secretTo));
+    });
+
+    if (symExecs.length === 0) {
+      logger.log('No secrets to symlink');
+      return afterSymlink(null);
+    }
+
+    exec(logger, symExecs.join(' && '), afterSymlink);
+  };
+
+  afterSymlink = function (err) {
+    if (err) {
+      return cb(err, logger);
+    }
+
+    logger.log('buildsrc is completed successfully!');
+    cb(null, logger);
   };
 
   logger.log('Getting the repo path');
