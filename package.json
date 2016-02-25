@@ -1,12 +1,16 @@
 {
   "name": "pushtodeploy",
   "description": "the simple way to deploy an app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": ["deployment", "testing", "build"],
   "bugs": {
     "url": "https://github.com/brendonboshell/pushtodeploy/issues"
   },
   "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/brendonboshell/pushtodeploy.git"
+  },
   "scripts": {},
   "bin": {
     "pushtodeploy": "bin/pushtodeploy.js",
