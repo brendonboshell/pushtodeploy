@@ -116,7 +116,7 @@ module.exports = function (opts, cb) {
     }
 
     logger.log('buildsrc is completed successfully!');
-    cb(null, logger);
+    cb(null, logger, repoPath, buildPath);
   };
 
   logger.log('Getting the repo path');

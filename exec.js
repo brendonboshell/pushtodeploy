@@ -1,11 +1,17 @@
 var exec = require("child_process").exec;
 
-module.exports = function (logger, cmd, cb) {
+module.exports = function (logger, cmd, execOpts, cb) {
   var stdout = "";
 
-  logger.log("Exec: " + cmd);
+  // third argument is optional
+  if (!cb) {
+    cb = execOpts;
+    execOpts = {};
+  }
 
-  var cp = exec(cmd);
+  logger.log("Exec: " + cmd + JSON.stringify(execOpts, null, 4));
+
+  var cp = exec(cmd, execOpts);
 
   cp.stdout.on('data', function (data) {
     stdout += data.toString();
