@@ -2,6 +2,8 @@
 
 `pushtodeploy` is a package which allows you to automatically deploy your Node.js application into your production or CI environment.
 
+![Email notified of a build failure](automated-deployment.png)
+
 ## What does it do?
 
 **Builds a source copy**:
