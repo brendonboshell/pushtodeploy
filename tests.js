@@ -9,6 +9,11 @@ module.exports = function (opts, repoPath, buildPath, cb) {
       packagePath,
       afterTest;
 
+  if (process.env.NODE_ENV === "production") {
+    logger.log("This is production. Not running tests. Moving on.");
+    return cb(null, logger);
+  }
+
   afterTest = function (err) {
     if (err) {
       return cb(err, logger);
