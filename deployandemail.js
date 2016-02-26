@@ -1,13 +1,32 @@
 var deploy = require("./deploy"),
-    nodemailer = require("nodemailer"),
-    transport;
+    nodemailer = require("nodemailer");
 
 module.exports = function (opts, cb) {
-  var afterDeploy;
+  var afterDeploy,
+      transport;
 
-  transport = nodemailer.createTransport(opts.email.smtp);
+  if (typeof opts.email === "undefined") {
+    opts.email = {};
+  }
+
+  if (typeof opts.email.enabled === "undefined") {
+    opts.email.enabled = false;
+  }
+
+  if (typeof opts.email.smtp === "undefined") {
+    opts.email.smtp = {};
+  }
+
+  if (opts.email.enabled) {
+    transport = nodemailer.createTransport(opts.email.smtp);
+  }
 
   afterDeploy = function (err, logger, commit) {
+    if (!opts.email.enabled) {
+      logger.log("Sending email disabled.");
+      return cb(err);
+    }
+
     if (err) {
       transport.sendMail({
         from: opts.email.from,

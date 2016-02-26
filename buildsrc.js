@@ -13,7 +13,7 @@ module.exports = function (opts, cb) {
       afterGetCommitHash,
       afterGetBranchName,
       afterGitClone,
-      afterCopyNodeModules,
+      afterCopy,
       afterSymlink;
 
   afterGetGitPath = function (err, path) {
@@ -59,33 +59,46 @@ module.exports = function (opts, cb) {
   };
 
   afterGitClone = function (err) {
-    var relativePath,
-        nodeModulesFrom,
-        nodeModulesTo;
+    var copyExecs = [];
 
     if (err) {
       return cb(err, logger, repoPath, buildPath, commit);
     }
 
-    if (!opts.copyNodeModules) {
-      logger.log('Copying node_modules is disabled. Moving on.');
-      return afterCopyNodeModules(null);
+    if (typeof opts.copyFromCurrent === "undefined") {
+      opts.copyFromCurrent = [];
     }
 
-    logger.log('Copying node_modules from current deployment');
-    relativePath = path.relative(repoPath, cwd);
-    nodeModulesFrom = path.join(cwd, ".pushtodeploy/current", relativePath, "node_modules");
-    nodeModulesTo = path.join(cwd, ".pushtodeploy/" + commit.hash, relativePath, "node_modules");
+    opts.copyFromCurrent.forEach(function (p) {
+      var copyFrom,
+          relativePath,
+          copyTo;
 
-    exec(logger, "cp -R " + escapeshellarg(nodeModulesFrom) + " " +
-      escapeshellarg(nodeModulesTo), afterCopyNodeModules);
+      relativePath = path.relative(repoPath, cwd);
+      copyFrom = path.join(cwd, ".pushtodeploy/current", relativePath, p);
+      copyTo = path.join(cwd, ".pushtodeploy/" + commit.hash, relativePath, p);
+
+      copyExecs.push("cp -R " + escapeshellarg(copyFrom) + " " +
+        escapeshellarg(copyTo));
+    });
+
+    if (copyExecs.length === 0) {
+      logger.log('Nothing to be copied.');
+      return afterCopy(null);
+    }
+
+    exec(logger, copyExecs.join(' && '), afterCopy);
   };
 
-  afterCopyNodeModules = function (err) {
+  afterCopy = function (err) {
     var symExecs = [];
 
     if (err) {
-      logger.log('Copy of node modules failed. Ignoring this error.');
+      logger.log('Copy failed. Ignoring this error.');
+    }
+
+    if (typeof opts.secrets === "undefined") {
+      opts.secrets = [];
     }
 
     opts.secrets.forEach(function (secret) {

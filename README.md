@@ -41,16 +41,23 @@ Then create a `pushtodeploy.json` config file, which looks something like this (
         "enabled": true // true to git pull before build
       },
       "buildsrc": {
-        "copyNodeModules": true, // true to copy node_modules from the latest build
-        "secrets": [
-          "../secrets.js" // array of secret files to copy over
+        "copyFromCurrent": [ // array of files to copy from the current build
+          "node_modules"
+        ],
+        "secrets": [ // array of secrets that should be symlinked
+          "../secrets.js"
         ]
       },
+      "install": {},
+      "tests": {},
+      "switchbuild": {},
+      "start": {},
       "email": {
+        "enabled": true, // true to send a success/failure email
         "from": "from@example.com",
         "to": "to@example.com",
         "smtp": {
-          "host": "smtp.mandrillapp.com",
+          "host": "smtp.mandrillapp.com", // these options are passed to nodemailer.
           "port": 587,
           "auth": {
             "user": "from@example.com",

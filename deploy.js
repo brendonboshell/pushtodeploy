@@ -27,6 +27,10 @@ module.exports = function (opts, cb) {
       return cb(err, logger, commit);
     }
 
+    if (typeof opts.buildsrc === "undefined") {
+      opts.buildsrc = {};
+    }
+
     buildsrc(opts.buildsrc, afterBuildsrc);
   };
 
@@ -41,6 +45,10 @@ module.exports = function (opts, cb) {
       return cb(err, logger, commit);
     }
 
+    if (typeof opts.install === "undefined") {
+      opts.install = {};
+    }
+
     install(opts.install, repoPath, buildPath, afterInstall);
   };
 
@@ -49,6 +57,10 @@ module.exports = function (opts, cb) {
 
     if (err) {
       return cb(err, logger, commit);
+    }
+
+    if (typeof opts.tests === "undefined") {
+      opts.tests = {};
     }
 
     tests(opts.tests, repoPath, buildPath, afterTests);
@@ -61,6 +73,10 @@ module.exports = function (opts, cb) {
       return cb(err, logger, commit);
     }
 
+    if (typeof opts.switchbuild === "undefined") {
+      opts.switchbuild = {};
+    }
+
     switchbuild(opts.switchbuild, repoPath, buildPath, afterSwitchBuild);
   };
 
@@ -69,6 +85,10 @@ module.exports = function (opts, cb) {
 
     if (err) {
       return cb(err, logger, commit);
+    }
+
+    if (typeof opts.start === "undefined") {
+      opts.start = {};
     }
 
     start(opts.start, repoPath, buildPath, afterStart);
@@ -83,6 +103,10 @@ module.exports = function (opts, cb) {
 
     cb(null, logger, commit);
   };
+
+  if (typeof opts.gitpull === "undefined") {
+    opts.gitpull = {};
+  }
 
   gitpull(opts.gitpull, afterGitpull);
 };
