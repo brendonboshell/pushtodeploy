@@ -110,7 +110,7 @@ module.exports = function (opts, cb) {
       relativePath = path.relative(repoPath, cwd);
       secretTo = path.join(cwd, ".pushtodeploy/" + commit.hash, relativePath, secret);
 
-      symExecs.push("ln -sfn " + escapeshellarg(secretFrom) + " " +
+      symExecs.push("rm -rf " + escapeshellarg(secretTo) + " && ln -sfn " + escapeshellarg(secretFrom) + " " +
         escapeshellarg(secretTo));
     });
 
