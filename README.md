@@ -37,6 +37,7 @@ Firstly, install the package:
 Then create a `pushtodeploy.json` config file, which looks something like this (without the comments):
 
     {
+      "deployIfUpToDate": false, // if git pull is already up to date, force deployment anyway?
       "gitpull": {
         "enabled": true // true to git pull before build
       },

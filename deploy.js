@@ -10,7 +10,7 @@ module.exports = function (opts, cb) {
   var logger = new Logger("pushtodeploy"),
       repoPath,
       buildPath,
-      commit = { hash: "unknown", branch: "unknown" },
+      commit = null,
       afterGitpull,
       afterBuildsrc,
       afterInstall,
@@ -20,7 +20,7 @@ module.exports = function (opts, cb) {
 
   logger.log("the simple way to deploy an app");
 
-  afterGitpull = function (err, _logger) {
+  afterGitpull = function (err, _logger, uptodate) {
     logger.addLogger(_logger);
 
     if (err) {
@@ -29,6 +29,15 @@ module.exports = function (opts, cb) {
 
     if (typeof opts.buildsrc === "undefined") {
       opts.buildsrc = {};
+    }
+
+    if (typeof opts.deployIfUpToDate === "undefined") {
+      opts.deployIfUpToDate = false;
+    }
+
+    if (uptodate && !opts.deployIfUpToDate) {
+      logger.log("Repo is already up to date. Not deploying anything.");
+      return cb(null, logger, commit);
     }
 
     buildsrc(opts.buildsrc, afterBuildsrc);

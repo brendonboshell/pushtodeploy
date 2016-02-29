@@ -22,6 +22,11 @@ module.exports = function (opts, cb) {
   }
 
   afterDeploy = function (err, logger, commit) {
+    // if commit is null, it was determined that a deployment is not necessary.
+    if (commit === null) {
+      return cb(null);
+    }
+
     if (!opts.email.enabled) {
       logger.log("Sending email disabled.");
       return cb(err);

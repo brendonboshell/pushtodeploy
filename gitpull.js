@@ -2,7 +2,8 @@ var Logger = require('./logger'),
     exec = require('./exec');
 
 module.exports = function (opts, cb) {
-  var logger = new Logger('gitpull     ');
+  var logger = new Logger('gitpull     '),
+      uptodate = true;
 
   if (typeof opts.enabled === "undefined") {
     opts.enabled = true;
@@ -15,7 +16,11 @@ module.exports = function (opts, cb) {
 
   logger.log('Doing a git pull');
 
-  exec(logger, 'git pull', function (err) {
-    cb(err, logger);
+  exec(logger, 'git pull', function (err, out) {
+    if (typeof out === "string" && !out.match(/^Already up-to-date/i)) {
+      uptodate = false;
+    }
+
+    cb(err, logger, uptodate);
   });
 };
