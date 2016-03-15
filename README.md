@@ -53,6 +53,9 @@ Then create a `pushtodeploy.json` config file, which looks something like this (
       "tests": {},
       "switchbuild": {},
       "start": {},
+      "cleanup": {
+        "maxVersions": 5
+      },
       "email": {
         "enabled": true, // true to send a success/failure email
         "from": "from@example.com",

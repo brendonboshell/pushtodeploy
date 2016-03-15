@@ -4,7 +4,8 @@ var Logger = require("./logger"),
     install = require("./install"),
     tests = require("./tests"),
     switchbuild = require("./switchbuild"),
-    start = require("./start");
+    start = require("./start"),
+    cleanup = require("./cleanup");
 
 module.exports = function (opts, cb) {
   var logger = new Logger("pushtodeploy"),
@@ -16,7 +17,8 @@ module.exports = function (opts, cb) {
       afterInstall,
       afterTests,
       afterSwitchBuild,
-      afterStart;
+      afterStart,
+      afterCleanup;
 
   logger.log("the simple way to deploy an app");
 
@@ -104,6 +106,20 @@ module.exports = function (opts, cb) {
   };
 
   afterStart = function (err, _logger) {
+    logger.addLogger(_logger);
+
+    if (err) {
+      return cb(err, logger, commit);
+    }
+
+    if (typeof opts.cleanup === "undefined") {
+      opts.cleanup = {};
+    }
+
+    cleanup(opts.cleanup, buildPath, afterCleanup);
+  };
+
+  afterCleanup = function (err, _logger) {
     logger.addLogger(_logger);
 
     if (err) {

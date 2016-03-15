@@ -1,15 +1,19 @@
 {
   "name": "pushtodeploy",
   "description": "the simple way to deploy an app",
-  "version": "0.1.8",
-  "keywords": ["deployment", "testing", "build"],
+  "version": "0.1.9",
+  "keywords": [
+    "deployment",
+    "testing",
+    "build"
+  ],
   "bugs": {
     "url": "https://github.com/brendonboshell/pushtodeploy/issues"
   },
   "license": "MIT",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/brendonboshell/pushtodeploy.git"
+    "type": "git",
+    "url": "https://github.com/brendonboshell/pushtodeploy.git"
   },
   "scripts": {},
   "bin": {
@@ -17,10 +21,12 @@
     "pushtodeploy-listen": "bin/pushtodeploy-listen.js"
   },
   "dependencies": {
+    "async": "^1.5.2",
     "command-line-args": "^2.1.6",
     "escapeshellarg": "^0.1.0",
     "express": "^4.13.4",
-    "nodemailer": "^2.2.1"
+    "nodemailer": "^2.2.1",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "mocha": "^2.4.5"
