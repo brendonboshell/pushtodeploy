@@ -31,7 +31,7 @@ function checkDeploy () {
   needsDeploy = false;
   deploying = true;
 
-  var cp = spawn("npm", ["run", "deploy"]);
+  var cp = spawn("npm", ["run", "deploy", "--", "--doNotDeployIfUpToDate"]);
 
   cp.stdout.on('data', function (data) {
     console.log(data.toString());

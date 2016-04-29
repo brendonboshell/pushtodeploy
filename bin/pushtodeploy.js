@@ -7,7 +7,8 @@ var deploy = require('../deployandemail'),
     opts;
 
 cli = commandLineArgs([
-  { name: 'config', alias: 'c', type: String }
+  { name: 'config', alias: 'c', type: String },
+  { name: 'doNotDeployIfUpToDate', alias: 'x', type: Boolean, defaultValue: false }
 ]);
 
 args = cli.parse();
@@ -17,6 +18,8 @@ if (typeof args.config === "undefined") {
 }
 
 opts = JSON.parse(fs.readFileSync(args.config));
+
+opts.deployIfUpToDate = !args.doNotDeployIfUpToDate;
 
 deploy(opts, function (err) {
   if (err) {

@@ -33,8 +33,11 @@ module.exports = function (opts, cb) {
       opts.buildsrc = {};
     }
 
+    // this option should default to true, and give error if we've already
+    // deployed a version. The listener server, however, will make sure this
+    // gets set to false, so it only responds to true changes.
     if (typeof opts.deployIfUpToDate === "undefined") {
-      opts.deployIfUpToDate = false;
+      opts.deployIfUpToDate = true;
     }
 
     if (uptodate && !opts.deployIfUpToDate) {
