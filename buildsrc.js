@@ -87,7 +87,7 @@ module.exports = function (opts, cb) {
       return afterCopy(null);
     }
 
-    exec(logger, copyExecs.join(' && '), afterCopy);
+    exec(logger, copyExecs.join(' ; '), afterCopy);
   };
 
   afterCopy = function (err) {
