@@ -23,7 +23,7 @@ module.exports = function (opts, cb) {
 
   afterDeploy = function (err, logger, commit) {
     // if commit is null, it was determined that a deployment is not necessary.
-    if (commit === null) {
+    if (!err && commit === null) {
       return cb(null);
     }
 
@@ -36,7 +36,7 @@ module.exports = function (opts, cb) {
       transport.sendMail({
         from: opts.email.from,
         to: opts.email.to,
-        subject: "Build FAILURE - " + commit.hash.substr(0, 6) + " on " + commit.branch,
+        subject: "Build FAILURE - " + (commit ? commit.hash.substr(0, 6) : "Unknown Commit") + " on " + (commit ? commit.branch : "Unknown Branch"),
         text: logger.toString()
       }, function (err) {
         if (err) {
